@@ -1,0 +1,44 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f6f8fa;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 600px;
+    margin: 40px auto;
+    background: #fff;
+    padding: 20px 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+h1 {
+    margin-top: 0;
+    text-align: center;
+}
+
+.disclaimer {
+    font-size: 0.9em;
+    color: #555;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin: 15px 0 5px;
+}
+
+select, input[type="number"] {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+.result {
+    margin-top: 20px;
+    font-size: 1.3em;
+    text-align: center;
+}
