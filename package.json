@@ -1,0 +1,12 @@
+{
+  "name": "canada-csr-calculator",
+  "version": "1.0.0",
+  "description": "Dynamic Express Entry CRS calculator with improved UI.",
+  "scripts": {
+    "start": "serve .",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "devDependencies": {
+    "serve": "^14.2.0"
+  }
+}
