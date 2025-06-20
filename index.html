@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canada CRS Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Express Entry CRS Calculator</h1>
+        <p class="disclaimer">This tool provides an approximate Comprehensive Ranking System (CRS) score. It is not official or affiliated with the Government of Canada.</p>
+        <form id="crs-form">
+            <label for="age">Age:</label>
+            <input type="number" id="age" min="0" max="100" value="30" />
+
+            <label for="education">Education:</label>
+            <select id="education">
+                <option value="0">Less than secondary</option>
+                <option value="28">Secondary diploma (high school)</option>
+                <option value="84">One-year post-secondary program</option>
+                <option value="91">Two-year post-secondary program</option>
+                <option value="112">Bachelor's degree (three or more years)</option>
+                <option value="119">Two or more certificates or diplomas (one 3+ years)</option>
+                <option value="126">Master's or professional degree</option>
+                <option value="140">Doctoral degree (PhD)</option>
+            </select>
+
+            <label for="experience">Canadian work experience:</label>
+            <select id="experience">
+                <option value="0">Less than one year</option>
+                <option value="40">1 year</option>
+                <option value="53">2 years</option>
+                <option value="64">3 years</option>
+                <option value="72">4 years</option>
+                <option value="80">5 years or more</option>
+            </select>
+
+            <label for="clb">First official language CLB level:</label>
+            <select id="clb">
+                <option value="0">CLB 4 or less</option>
+                <option value="6">CLB 5</option>
+                <option value="8">CLB 6</option>
+                <option value="16">CLB 7</option>
+                <option value="22">CLB 8</option>
+                <option value="29">CLB 9</option>
+                <option value="32">CLB 10 or more</option>
+            </select>
+        </form>
+        <div class="result">
+            <span>Total CRS score:</span>
+            <strong id="total">0</strong>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
