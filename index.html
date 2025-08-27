@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRS Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>CRS Calculator</h1>
+            <p>Comprehensive Ranking System (CRS) score calculator for Canadian Immigration.</p>
+        </header>
+        <main>
+            <form id="crs-form">
+                <section id="personal-info">
+                    <h2>Personal Information</h2>
+                    <div class="form-group">
+                        <label for="marital-status">Marital Status</label>
+                        <select id="marital-status" name="maritalStatus">
+                            <option value="single">Single</option>
+                            <option value="married">Married / Common-law</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="age">Age</label>
+                        <input type="number" id="age" name="age" value="29" required>
+                    </div>
+                </section>
+
+                <section id="education">
+                    <h2>Education</h2>
+                    <div class="form-group">
+                        <label for="education-level">Highest Level of Education</label>
+                        <select id="education-level" name="education">
+                            <option value="none">None</option>
+                            <option value="secondary">Secondary school</option>
+                            <option value="postSecondary1">1-year post-secondary</option>
+                            <option value="postSecondary2">2-year post-secondary</option>
+                            <option value="bachelors">Bachelor's degree</option>
+                            <option value="twoPostSecondary">2+ post-secondary degrees</option>
+                            <option value="masters" selected>Master's degree</option>
+                            <option value="phd">Doctorate / PhD</option>
+                        </select>
+                    </div>
+                </section>
+
+                <section id="language">
+                    <h2>Language Proficiency</h2>
+                    <div class="language-group">
+                        <h3>First Language (English/French)</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="first-lang-reading">Reading</label>
+                                <select id="first-lang-reading" name="firstLangReading">
+                                    <option value="4">CLB 4</option><option value="5">CLB 5</option><option value="6">CLB 6</option>
+                                    <option value="7" selected>CLB 7</option><option value="8">CLB 8</option><option value="9">CLB 9</option><option value="10">CLB 10+</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="first-lang-writing">Writing</label>
+                                <select id="first-lang-writing" name="firstLangWriting">
+                                    <option value="4">CLB 4</option><option value="5">CLB 5</option><option value="6">CLB 6</option>
+                                    <option value="7" selected>CLB 7</option><option value="8">CLB 8</option><option value="9">CLB 9</option><option value="10">CLB 10+</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="first-lang-speaking">Speaking</label>
+                                <select id="first-lang-speaking" name="firstLangSpeaking">
+                                    <option value="4">CLB 4</option><option value="5">CLB 5</option><option value="6">CLB 6</option>
+                                    <option value="7" selected>CLB 7</option><option value="8">CLB 8</option><option value="9">CLB 9</option><option value="10">CLB 10+</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="first-lang-listening">Listening</label>
+                                <select id="first-lang-listening" name="firstLangListening">
+                                    <option value="4">CLB 4</option><option value="5">CLB 5</option><option value="6">CLB 6</option>
+                                    <option value="7" selected>CLB 7</option><option value="8">CLB 8</option><option value="9">CLB 9</option><option value="10">CLB 10+</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="work-experience">
+                    <h2>Work Experience</h2>
+                    <div class="form-group">
+                        <label for="canadian-work-exp">Canadian Work Experience</label>
+                        <select id="canadian-work-exp" name="canadianWorkExp">
+                            <option value="0">0-1 year</option><option value="1" selected>1 year</option><option value="2">2 years</option>
+                            <option value="3">3 years</option><option value="4">4 years</option><option value="5">5+ years</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="foreign-work-exp">Foreign Work Experience</label>
+                        <select id="foreign-work-exp" name="foreignWorkExp">
+                            <option value="0" selected>0-1 year</option><option value="1">1 year</option><option value="2">2 years</option>
+                            <option value="3">3 years</option><option value="4">4 years</option><option value="5">5+ years</option>
+                        </select>
+                    </div>
+                </section>
+
+                <section id="spouse-info" class="hidden">
+                    <h2>Spouse's Information</h2>
+                     <div class="form-group">
+                        <label for="spouse-education-level">Spouse's Highest Level of Education</label>
+                        <select id="spouse-education-level" name="spouseEducation">
+                            <option value="none" selected>None</option>
+                            <option value="secondary">Secondary school</option>
+                            <option value="postSecondary1">1-year post-secondary</option>
+                            <option value="postSecondary2">2-year post-secondary</option>
+                            <option value="bachelors">Bachelor's degree</option>
+                            <option value="twoPostSecondary">2+ post-secondary degrees</option>
+                            <option value="masters">Master's degree</option>
+                            <option value="phd">Doctorate / PhD</option>
+                        </select>
+                    </div>
+                    <div class="language-group">
+                        <h3>Spouse's Language Proficiency</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="spouse-lang-reading">Reading</label>
+                                <select id="spouse-lang-reading" name="spouseLangReading">
+                                    <option value="0">N/A</option><option value="4">CLB 4</option><option value="5">CLB 5</option><option value="6">CLB 6</option>
+                                    <option value="7">CLB 7</option><option value="8">CLB 8</option><option value="9">CLB 9</option><option value="10">CLB 10+</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="spouse-lang-writing">Writing</label>
+                                <select id="spouse-lang-writing" name="spouseLangWriting">
+                                    <option value="0">N/A</option><option value="4">CLB 4</option><option value="5">CLB 5</option><option value="6">CLB 6</option>
+                                    <option value="7">CLB 7</option><option value="8">CLB 8</option><option value="9">CLB 9</option><option value="10">CLB 10+</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="spouse-lang-speaking">Speaking</label>
+                                <select id="spouse-lang-speaking" name="spouseLangSpeaking">
+                                    <option value="0">N/A</option><option value="4">CLB 4</option><option value="5">CLB 5</option><option value="6">CLB 6</option>
+                                    <option value="7">CLB 7</option><option value="8">CLB 8</option><option value="9">CLB 9</option><option value="10">CLB 10+</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="spouse-lang-listening">Listening</label>
+                                <select id="spouse-lang-listening" name="spouseLangListening">
+                                    <option value="0">N/A</option><option value="4">CLB 4</option><option value="5">CLB 5</option><option value="6">CLB 6</option>
+                                    <option value="7">CLB 7</option><option value="8">CLB 8</option><option value="9">CLB 9</option><option value="10">CLB 10+</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="spouse-canadian-work-exp">Spouse's Canadian Work Experience</label>
+                        <select id="spouse-canadian-work-exp" name="spouseWorkExp">
+                            <option value="0" selected>0-1 year</option><option value="1">1 year</option><option value="2">2 years</option>
+                            <option value="3">3 years</option><option value="4">4 years</option><option value="5">5+ years</option>
+                        </select>
+                    </div>
+                </section>
+
+                <section id="additional-points">
+                    <h2>Additional Points</h2>
+                    <div class="form-group-checkbox">
+                        <input type="checkbox" id="certificate" name="certificate">
+                        <label for="certificate">Certificate of Qualification from a Canadian province or territory</label>
+                    </div>
+                    <div class="form-group-checkbox">
+                        <input type="checkbox" id="provincial-nomination" name="provincialNomination">
+                        <label for="provincial-nomination">Provincial Nomination</label>
+                    </div>
+                    <div class="form-group-checkbox">
+                        <input type="checkbox" id="sibling-in-canada" name="siblingInCanada">
+                        <label for="sibling-in-canada">Sibling in Canada (citizen or PR)</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="canadian-education">Post-secondary education in Canada</label>
+                        <select id="canadian-education" name="canadianEducation">
+                            <option value="none" selected>None</option>
+                            <option value="1-2">1 or 2 years</option>
+                            <option value="3+">3 years or more</option>
+                        </select>
+                    </div>
+                </section>
+
+                <button type="submit" class="btn-submit">Calculate CRS Score</button>
+            </form>
+
+            <section id="results" class="hidden">
+                <h2>Results</h2>
+                <div class="results-card">
+                    <h3>Total CRS Score: <span id="total-score">0</span></h3>
+                    <div id="score-breakdown">
+                        <p>Core Human Capital: <span id="breakdown-core">0</span></p>
+                        <p>Spouse Factors: <span id="breakdown-spouse">0</span></p>
+                        <p>Skill Transferability: <span id="breakdown-skill">0</span></p>
+                        <p>Additional Points: <span id="breakdown-additional">0</span></p>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <footer>
+            <p>Made by <a href="https://vweb.dev" target="_blank">vweb.dev</a></p>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
