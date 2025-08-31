@@ -161,6 +161,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const printBtn = document.getElementById('print-btn');
     const tipsSection = document.getElementById('tips-section');
     const tipsList = document.getElementById('tips-list');
+    const emailForm = document.getElementById('email-form');
+    const emailInput = document.getElementById('email-input');
+    const emailStatus = document.getElementById('email-status');
+
+    let currentResult = null; // To store the latest result for emailing
 
     // --- MODAL LOGIC ---
     const infoContent = {
@@ -266,6 +271,42 @@ document.addEventListener('DOMContentLoaded', () => {
         tipsSection.classList.remove('hidden');
         resultsSection.classList.remove('hidden');
         printBtn.classList.remove('hidden');
+        emailForm.classList.remove('hidden');
+
+        currentResult = result; // Store result
+    });
+
+    emailForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        emailStatus.textContent = 'Sending...';
+
+        const data = {
+            email: emailInput.value,
+            score: currentResult.totalScore,
+            breakdown: currentResult.breakdown
+        };
+
+        fetch('send_email.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+            emailStatus.textContent = data.message;
+            if (data.success) {
+                emailStatus.style.color = 'lightgreen';
+            } else {
+                emailStatus.style.color = 'salmon';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            emailStatus.textContent = 'An error occurred.';
+            emailStatus.style.color = 'salmon';
+        });
     });
 
     printBtn.addEventListener('click', () => {
