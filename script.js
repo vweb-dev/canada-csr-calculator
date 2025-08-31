@@ -119,6 +119,35 @@ document.addEventListener('DOMContentLoaded', () => {
         return { totalScore, breakdown };
     }
 
+    function generatePersonalizedTips(inputs) {
+        const tips = [];
+        const { education, firstLang, canadianWorkExp, foreignWorkExp, provincialNomination, siblingInCanada } = inputs;
+
+        if (firstLang.reading < 9 || firstLang.writing < 9 || firstLang.speaking < 9 || firstLang.listening < 9) {
+            tips.push("Improving your language scores to CLB 9 or higher in all abilities can significantly increase your score.");
+        }
+        if (education !== 'phd' && education !== 'masters') {
+            tips.push("Higher levels of education, such as a Master's degree or PhD, provide more points.");
+        }
+        if (canadianWorkExp < 5) {
+            tips.push("Gaining more Canadian work experience can increase your score. The maximum points are awarded for 5 or more years.");
+        }
+        if (foreignWorkExp < 3) {
+            tips.push("At least 3 years of foreign work experience can add more points in combination with other factors.");
+        }
+        if (!provincialNomination) {
+            tips.push("A provincial nomination is the most impactful way to boost your score, adding 600 points.");
+        }
+        if (!siblingInCanada) {
+            tips.push("Having a sibling who is a Canadian citizen or permanent resident can add 15 points.");
+        }
+
+        if (tips.length === 0) {
+            tips.push("Your profile is very strong! Keep an eye on the latest Express Entry draws.");
+        }
+        return tips;
+    }
+
     // --- DOM MANIPULATION ---
     const form = document.getElementById('crs-form');
     const maritalStatusSelect = document.getElementById('marital-status');
@@ -130,6 +159,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const breakdownSkillEl = document.getElementById('breakdown-skill');
     const breakdownAdditionalEl = document.getElementById('breakdown-additional');
     const printBtn = document.getElementById('print-btn');
+    const tipsSection = document.getElementById('tips-section');
+    const tipsList = document.getElementById('tips-list');
 
     // --- MODAL LOGIC ---
     const infoContent = {
@@ -223,6 +254,16 @@ document.addEventListener('DOMContentLoaded', () => {
         breakdownSkillEl.textContent = result.breakdown.skill;
         breakdownAdditionalEl.textContent = result.breakdown.additional;
 
+        // Generate and display tips
+        const tips = generatePersonalizedTips(inputs);
+        tipsList.innerHTML = ''; // Clear previous tips
+        tips.forEach(tip => {
+            const li = document.createElement('li');
+            li.textContent = tip;
+            tipsList.appendChild(li);
+        });
+
+        tipsSection.classList.remove('hidden');
         resultsSection.classList.remove('hidden');
         printBtn.classList.remove('hidden');
     });

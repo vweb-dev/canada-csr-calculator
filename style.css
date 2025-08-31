@@ -139,6 +139,28 @@ input[type="checkbox"] {
     margin-top: 0;
 }
 
+#tips-section {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+#tips-section h4 {
+    color: var(--label-color);
+    margin-top: 0;
+    font-size: 1.2rem;
+}
+
+#tips-list {
+    list-style-type: '💡';
+    padding-left: 25px;
+}
+
+#tips-list li {
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
 #print-btn {
     margin-top: 20px;
 }
