@@ -139,6 +139,44 @@ input[type="checkbox"] {
     margin-top: 0;
 }
 
+#print-btn {
+    margin-top: 20px;
+}
+
+@media print {
+    body {
+        background-color: #FFFFFF;
+        color: #000000;
+        padding: 0;
+        margin: 20px;
+    }
+
+    .container {
+        box-shadow: none;
+        padding: 0;
+        max-width: 100%;
+    }
+
+    header, main > form, footer, .modal, #print-btn {
+        display: none;
+    }
+
+    section#results {
+        display: block !important;
+        border: none;
+    }
+
+    .results-card {
+        border: 1px solid #000;
+        background-color: #FFFFFF;
+        box-shadow: none;
+    }
+
+    .results-card h3, #modal-title, #score-breakdown p, #score-breakdown span {
+        color: #000000 !important;
+    }
+}
+
 #score-breakdown p {
     margin: 10px 0;
     font-size: 1.1rem;

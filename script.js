@@ -129,6 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const breakdownSpouseEl = document.getElementById('breakdown-spouse');
     const breakdownSkillEl = document.getElementById('breakdown-skill');
     const breakdownAdditionalEl = document.getElementById('breakdown-additional');
+    const printBtn = document.getElementById('print-btn');
 
     // --- MODAL LOGIC ---
     const infoContent = {
@@ -223,5 +224,10 @@ document.addEventListener('DOMContentLoaded', () => {
         breakdownAdditionalEl.textContent = result.breakdown.additional;
 
         resultsSection.classList.remove('hidden');
+        printBtn.classList.remove('hidden');
+    });
+
+    printBtn.addEventListener('click', () => {
+        window.print();
     });
 });
