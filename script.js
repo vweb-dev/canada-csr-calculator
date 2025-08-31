@@ -119,6 +119,26 @@ document.addEventListener('DOMContentLoaded', () => {
         return { totalScore, breakdown };
     }
 
+    function animateCountUp(element, endValue) {
+        let startValue = 0;
+        const duration = 1000; // 1 second
+        const frameDuration = 1000 / 60; // 60 FPS
+        const totalFrames = Math.round(duration / frameDuration);
+        const increment = endValue / totalFrames;
+
+        let currentFrame = 0;
+        const counter = setInterval(() => {
+            startValue += increment;
+            currentFrame++;
+            if (currentFrame === totalFrames) {
+                element.textContent = endValue;
+                clearInterval(counter);
+            } else {
+                element.textContent = Math.round(startValue);
+            }
+        }, frameDuration);
+    }
+
     function generatePersonalizedTips(inputs) {
         const tips = [];
         const { education, firstLang, canadianWorkExp, foreignWorkExp, provincialNomination, siblingInCanada } = inputs;
@@ -253,7 +273,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const result = calculateCRS(inputs);
 
-        totalScoreEl.textContent = result.totalScore;
+        // Animate the score
+        animateCountUp(totalScoreEl, result.totalScore);
         breakdownCoreEl.textContent = result.breakdown.core;
         breakdownSpouseEl.textContent = result.breakdown.spouse;
         breakdownSkillEl.textContent = result.breakdown.skill;
@@ -269,7 +290,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         tipsSection.classList.remove('hidden');
+
+        // Trigger animation
         resultsSection.classList.remove('hidden');
+        resultsSection.classList.add('fade-in-up');
+
         printBtn.classList.remove('hidden');
         emailForm.classList.remove('hidden');
 
