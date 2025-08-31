@@ -32,7 +32,7 @@
                 <section id="education">
                     <h2>Education</h2>
                     <div class="form-group">
-                        <label for="education-level">Highest Level of Education</label>
+                        <label for="education-level">Highest Level of Education <span class="info-icon" data-info="education">(?)</span></label>
                         <select id="education-level" name="education">
                             <option value="none">None</option>
                             <option value="secondary">Secondary school</option>
@@ -49,7 +49,7 @@
                 <section id="language">
                     <h2>Language Proficiency</h2>
                     <div class="language-group">
-                        <h3>First Language (English/French)</h3>
+                        <h3>First Language (English/French) <span class="info-icon" data-info="language">(?)</span></h3>
                         <div class="form-grid">
                             <div class="form-group">
                                 <label for="first-lang-reading">Reading</label>
@@ -86,7 +86,7 @@
                 <section id="work-experience">
                     <h2>Work Experience</h2>
                     <div class="form-group">
-                        <label for="canadian-work-exp">Canadian Work Experience</label>
+                        <label for="canadian-work-exp">Canadian Work Experience <span class="info-icon" data-info="work">(?)</span></label>
                         <select id="canadian-work-exp" name="canadianWorkExp">
                             <option value="0">0-1 year</option><option value="1" selected>1 year</option><option value="2">2 years</option>
                             <option value="3">3 years</option><option value="4">4 years</option><option value="5">5+ years</option>
@@ -203,5 +203,13 @@
         </footer>
     </div>
     <script src="script.js"></script>
+
+    <div id="info-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="modal-close-btn">&times;</span>
+            <h3 id="modal-title"></h3>
+            <p id="modal-text"></p>
+        </div>
+    </div>
 </body>
 </html>

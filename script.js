@@ -130,6 +130,52 @@ document.addEventListener('DOMContentLoaded', () => {
     const breakdownSkillEl = document.getElementById('breakdown-skill');
     const breakdownAdditionalEl = document.getElementById('breakdown-additional');
 
+    // --- MODAL LOGIC ---
+    const infoContent = {
+        education: {
+            title: "Level of Education",
+            text: "Select your highest completed level of education. You must have an Educational Credential Assessment (ECA) for foreign degrees to get points."
+        },
+        language: {
+            title: "Language Proficiency (CLB)",
+            text: "CLB stands for Canadian Language Benchmark. You must take an approved language test (IELTS for English, TEF for French) to get your CLB level for Reading, Writing, Speaking, and Listening."
+        },
+        work: {
+            title: "Work Experience",
+            text: "Provide details about your skilled work experience. Canadian experience is work done in Canada. Foreign experience is work done outside of Canada."
+        }
+    };
+
+    const modal = document.getElementById('info-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalText = document.getElementById('modal-text');
+    const closeModalBtn = document.querySelector('.modal-close-btn');
+    const infoIcons = document.querySelectorAll('.info-icon');
+
+    infoIcons.forEach(icon => {
+        icon.addEventListener('click', () => {
+            const infoKey = icon.getAttribute('data-info');
+            const content = infoContent[infoKey];
+            if (content) {
+                modalTitle.textContent = content.title;
+                modalText.textContent = content.text;
+                modal.classList.remove('hidden');
+            }
+        });
+    });
+
+    const closeModal = () => {
+        modal.classList.add('hidden');
+    };
+
+    closeModalBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+
+
     maritalStatusSelect.addEventListener('change', (e) => {
         if (e.target.value === 'married') {
             spouseSection.classList.remove('hidden');
