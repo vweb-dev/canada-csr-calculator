@@ -139,6 +139,32 @@ input[type="checkbox"] {
     margin-top: 0;
 }
 
+#draws-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#draws-table th, #draws-table td {
+    border: 1px solid var(--border-color);
+    padding: 12px;
+    text-align: left;
+}
+
+#draws-table th {
+    background-color: var(--primary-color);
+    color: var(--surface-color);
+    font-weight: 700;
+}
+
+#draws-table tbody tr:nth-child(even) {
+    background-color: #333;
+}
+
+#draws-table tbody tr:hover {
+    background-color: #444;
+}
+
 #tips-section {
     margin-top: 25px;
     padding-top: 20px;

@@ -271,4 +271,29 @@ document.addEventListener('DOMContentLoaded', () => {
     printBtn.addEventListener('click', () => {
         window.print();
     });
+
+    // --- DRAWS TABLE LOGIC ---
+    const recentDraws = [
+        { date: "Aug 15, 2025", drawType: "General", minScore: 525 },
+        { date: "Aug 1, 2025", drawType: "Provincial Nominee Program", minScore: 751 },
+        { date: "Jul 18, 2025", drawType: "Canadian Experience Class", minScore: 458 },
+        { date: "Jul 4, 2025", drawType: "General", minScore: 529 },
+        { date: "Jun 20, 2025", drawType: "Federal Skilled Worker", minScore: 496 },
+    ];
+
+    function populateDrawsTable() {
+        const tableBody = document.getElementById('draws-table-body');
+        tableBody.innerHTML = ''; // Clear existing rows
+        recentDraws.forEach(draw => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${draw.date}</td>
+                <td>${draw.drawType}</td>
+                <td>${draw.minScore}</td>
+            `;
+            tableBody.appendChild(row);
+        });
+    }
+
+    populateDrawsTable();
 });
