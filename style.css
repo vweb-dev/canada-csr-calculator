@@ -240,9 +240,28 @@ input[type="checkbox"] {
     }
 }
 
+#score-breakdown .breakdown-category {
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+#score-breakdown .breakdown-category:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+#score-breakdown h4 {
+    color: var(--label-color);
+    margin: 0 0 10px 0;
+}
+
 #score-breakdown p {
-    margin: 10px 0;
-    font-size: 1.1rem;
+    margin: 5px 0 5px 15px;
+    font-size: 1rem;
+    display: flex;
+    justify-content: space-between;
 }
 
 #score-breakdown span {

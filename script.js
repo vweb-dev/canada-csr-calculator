@@ -45,24 +45,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function calculateCRS(inputs) {
         const withSpouse = inputs.maritalStatus === "married";
-        let breakdown = { core: 0, spouse: 0, skill: 0, additional: 0 };
+        const detailedBreakdown = {
+            age: 0, education: 0, language: 0, work_ca: 0,
+            spouse_education: 0, spouse_language: 0, spouse_work_ca: 0,
+            skill: 0, additional: 0
+        };
 
         // Core Human Capital
         const agePointsTable = withSpouse ? AGE_POINTS_WITH_SPOUSE : AGE_POINTS;
-        breakdown.core += agePointsTable[inputs.age] || 0;
+        detailedBreakdown.age = agePointsTable[inputs.age] || 0;
         const eduPointsTable = withSpouse ? EDUCATION_POINTS_WITH_SPOUSE : EDUCATION_POINTS;
-        breakdown.core += eduPointsTable[inputs.education] || 0;
+        detailedBreakdown.education = eduPointsTable[inputs.education] || 0;
         const langPointsFirstTable = withSpouse ? LANGUAGE_POINTS_FIRST_WITH_SPOUSE : LANGUAGE_POINTS_FIRST;
-        breakdown.core += (langPointsFirstTable[inputs.firstLang.reading] || 0) + (langPointsFirstTable[inputs.firstLang.writing] || 0) + (langPointsFirstTable[inputs.firstLang.speaking] || 0) + (langPointsFirstTable[inputs.firstLang.listening] || 0);
-        // Second language points are not implemented yet.
+        detailedBreakdown.language = (langPointsFirstTable[inputs.firstLang.reading] || 0) + (langPointsFirstTable[inputs.firstLang.writing] || 0) + (langPointsFirstTable[inputs.firstLang.speaking] || 0) + (langPointsFirstTable[inputs.firstLang.listening] || 0);
         const workExpPointsTable = withSpouse ? CANADIAN_WORK_EXP_POINTS_WITH_SPOUSE : CANADIAN_WORK_EXP_POINTS;
-        breakdown.core += workExpPointsTable[inputs.canadianWorkExp] || 0;
+        detailedBreakdown.work_ca = workExpPointsTable[inputs.canadianWorkExp] || 0;
 
         // Spouse Factors
         if (withSpouse) {
-            breakdown.spouse += SPOUSE_EDUCATION_POINTS[inputs.spouseEducation] || 0;
-            breakdown.spouse += (SPOUSE_LANGUAGE_POINTS[inputs.spouseFirstLang.reading] || 0) + (SPOUSE_LANGUAGE_POINTS[inputs.spouseFirstLang.writing] || 0) + (SPOUSE_LANGUAGE_POINTS[inputs.spouseFirstLang.speaking] || 0) + (SPOUSE_LANGUAGE_POINTS[inputs.spouseFirstLang.listening] || 0);
-            breakdown.spouse += SPOUSE_WORK_EXP_POINTS[inputs.spouseWorkExp] || 0;
+            detailedBreakdown.spouse_education = SPOUSE_EDUCATION_POINTS[inputs.spouseEducation] || 0;
+            detailedBreakdown.spouse_language = (SPOUSE_LANGUAGE_POINTS[inputs.spouseFirstLang.reading] || 0) + (SPOUSE_LANGUAGE_POINTS[inputs.spouseFirstLang.writing] || 0) + (SPOUSE_LANGUAGE_POINTS[inputs.spouseFirstLang.speaking] || 0) + (SPOUSE_LANGUAGE_POINTS[inputs.spouseFirstLang.listening] || 0);
+            detailedBreakdown.spouse_work_ca = SPOUSE_WORK_EXP_POINTS[inputs.spouseWorkExp] || 0;
         }
 
         // Skill Transferability
@@ -102,21 +105,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 5. Certificate of Qualification + Language
         if (inputs.certificate) {
-            if (clb7) breakdown.skill += SKILL_TRANSFERABILITY_POINTS.cert_lang_2;
+            if (clb7) skillPoints += SKILL_TRANSFERABILITY_POINTS.cert_lang_2;
             else if (inputs.firstLang.reading >= 5 && inputs.firstLang.writing >= 5 && inputs.firstLang.speaking >= 5 && inputs.firstLang.listening >= 5) {
-                breakdown.skill += SKILL_TRANSFERABILITY_POINTS.cert_lang_1;
+                skillPoints += SKILL_TRANSFERABILITY_POINTS.cert_lang_1;
             }
         }
+        detailedBreakdown.skill = skillPoints;
 
         // Additional Points
-        if (inputs.siblingInCanada) breakdown.additional += ADDITIONAL_POINTS.sibling;
-        if (inputs.canadianEducation === '1-2') breakdown.additional += ADDITIONAL_POINTS.canadian_edu_1_2;
-        if (inputs.canadianEducation === '3+') breakdown.additional += ADDITIONAL_POINTS.canadian_edu_3_plus;
-        if (inputs.provincialNomination) breakdown.additional += ADDITIONAL_POINTS.provincial_nomination;
+        if (inputs.siblingInCanada) detailedBreakdown.additional += ADDITIONAL_POINTS.sibling;
+        if (inputs.canadianEducation === '1-2') detailedBreakdown.additional += ADDITIONAL_POINTS.canadian_edu_1_2;
+        if (inputs.canadianEducation === '3+') detailedBreakdown.additional += ADDITIONAL_POINTS.canadian_edu_3_plus;
+        if (inputs.provincialNomination) detailedBreakdown.additional += ADDITIONAL_POINTS.provincial_nomination;
 
-        const totalScore = breakdown.core + breakdown.spouse + breakdown.skill + breakdown.additional;
+        const coreTotal = detailedBreakdown.age + detailedBreakdown.education + detailedBreakdown.language + detailedBreakdown.work_ca;
+        const spouseTotal = detailedBreakdown.spouse_education + detailedBreakdown.spouse_language + detailedBreakdown.spouse_work_ca;
+        const totalScore = coreTotal + spouseTotal + detailedBreakdown.skill + detailedBreakdown.additional;
 
-        return { totalScore, breakdown };
+        return {
+            totalScore,
+            breakdown: {
+                core: coreTotal,
+                spouse: spouseTotal,
+                skill: detailedBreakdown.skill,
+                additional: detailedBreakdown.additional
+            },
+            detailed: detailedBreakdown
+        };
     }
 
     function animateCountUp(element, endValue) {
@@ -176,8 +191,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const totalScoreEl = document.getElementById('total-score');
     const breakdownCoreEl = document.getElementById('breakdown-core');
     const breakdownSpouseEl = document.getElementById('breakdown-spouse');
-    const breakdownSkillEl = document.getElementById('breakdown-skill');
-    const breakdownAdditionalEl = document.getElementById('breakdown-additional');
+    const breakdownSkillTotalEl = document.getElementById('breakdown-skill-total');
+    const breakdownAdditionalTotalEl = document.getElementById('breakdown-additional-total');
+    const breakdownAgeEl = document.getElementById('breakdown-age');
+    const breakdownEducationEl = document.getElementById('breakdown-education');
+    const breakdownLanguageEl = document.getElementById('breakdown-language');
+    const breakdownWorkCaEl = document.getElementById('breakdown-work-ca');
+    const breakdownSpouseEducationEl = document.getElementById('breakdown-spouse-education');
+    const breakdownSpouseLanguageEl = document.getElementById('breakdown-spouse-language');
+    const breakdownSpouseWorkCaEl = document.getElementById('breakdown-spouse-work-ca');
     const printBtn = document.getElementById('print-btn');
     const tipsSection = document.getElementById('tips-section');
     const tipsList = document.getElementById('tips-list');
@@ -275,10 +297,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Animate the score
         animateCountUp(totalScoreEl, result.totalScore);
-        breakdownCoreEl.textContent = result.breakdown.core;
-        breakdownSpouseEl.textContent = result.breakdown.spouse;
-        breakdownSkillEl.textContent = result.breakdown.skill;
-        breakdownAdditionalEl.textContent = result.breakdown.additional;
+
+        // Populate detailed breakdown
+        document.getElementById('breakdown-core-total').textContent = result.breakdown.core;
+        document.getElementById('breakdown-spouse-total').textContent = result.breakdown.spouse;
+        document.getElementById('breakdown-skill-total').textContent = result.breakdown.skill;
+        document.getElementById('breakdown-additional-total').textContent = result.breakdown.additional;
+
+        breakdownAgeEl.textContent = result.detailed.age;
+        breakdownEducationEl.textContent = result.detailed.education;
+        breakdownLanguageEl.textContent = result.detailed.language;
+        breakdownWorkCaEl.textContent = result.detailed.work_ca;
+
+        breakdownSpouseEducationEl.textContent = result.detailed.spouse_education;
+        breakdownSpouseLanguageEl.textContent = result.detailed.spouse_language;
+        breakdownSpouseWorkCaEl.textContent = result.detailed.spouse_work_ca;
 
         // Generate and display tips
         const tips = generatePersonalizedTips(inputs);
