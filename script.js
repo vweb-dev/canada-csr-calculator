@@ -206,6 +206,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const emailForm = document.getElementById('email-form');
     const emailInput = document.getElementById('email-input');
     const emailStatus = document.getElementById('email-status');
+    const saveBtn = document.getElementById('save-btn');
+    const loadBtn = document.getElementById('load-btn');
 
     let currentResult = null; // To store the latest result for emailing
 
@@ -395,4 +397,46 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     populateDrawsTable();
+
+    // --- SAVE/LOAD LOGIC ---
+    saveBtn.addEventListener('click', () => {
+        const formData = new FormData(form);
+        const data = {};
+        for (let [key, value] of formData.entries()) {
+            // Special handling for checkboxes
+            const element = form.elements[key];
+            if (element.type === 'checkbox') {
+                data[key] = element.checked;
+            } else {
+                data[key] = value;
+            }
+        }
+        localStorage.setItem('crsProfile', JSON.stringify(data));
+        alert('Profile Saved!');
+    });
+
+    loadBtn.addEventListener('click', () => {
+        const savedData = localStorage.getItem('crsProfile');
+        if (savedData) {
+            const data = JSON.parse(savedData);
+            for (let key in data) {
+                const element = form.elements[key];
+                if (element) {
+                    if (element.type === 'checkbox') {
+                        element.checked = data[key];
+                    } else {
+                        element.value = data[key];
+                    }
+                }
+            }
+            alert('Profile Loaded!');
+        } else {
+            alert('No saved profile found.');
+        }
+    });
+
+    // Disable load button if no data
+    if (!localStorage.getItem('crsProfile')) {
+        loadBtn.disabled = true;
+    }
 });
