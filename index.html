@@ -182,6 +182,29 @@
                     </div>
                 </section>
 
+                <section id="eligibility-info">
+                    <h2>Program Eligibility Information</h2>
+                    <div class="form-group">
+                        <label for="noc-teer">Primary Occupation NOC TEER Category</label>
+                        <select id="noc-teer" name="nocTeer">
+                            <option value="0">TEER 0</option>
+                            <option value="1">TEER 1</option>
+                            <option value="2">TEER 2</option>
+                            <option value="3">TEER 3</option>
+                            <option value="4">TEER 4</option>
+                            <option value="5">TEER 5</option>
+                        </select>
+                    </div>
+                    <div class="form-group-checkbox">
+                        <input type="checkbox" id="job-offer" name="jobOffer">
+                        <label for="job-offer">Do you have a valid job offer from a Canadian employer?</label>
+                    </div>
+                     <div class="form-group-checkbox">
+                        <input type="checkbox" id="relatives-in-canada" name="relativesInCanada">
+                        <label for="relatives-in-canada">Do you or your spouse/partner have a relative living in Canada (citizen or PR)?</label>
+                    </div>
+                </section>
+
                 <div class="form-actions">
                     <button type="button" id="save-btn" class="btn-secondary">Save Profile</button>
                     <button type="button" id="load-btn" class="btn-secondary">Load Profile</button>
@@ -216,6 +239,10 @@
                             <h4>Additional Points (<span id="breakdown-additional-total">0</span>)</h4>
                             <!-- Detailed additional points can be added here if needed -->
                         </div>
+                    </div>
+                    <div id="eligibility-results" class="hidden">
+                        <h4>You may be eligible for the following programs:</h4>
+                        <ul id="eligibility-list"></ul>
                     </div>
                     <div id="tips-section" class="hidden">
                         <h4>How to Improve Your Score:</h4>

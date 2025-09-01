@@ -231,6 +231,29 @@ input[type="checkbox"] {
     line-height: 1.5;
 }
 
+#eligibility-results {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+#eligibility-results h4 {
+    color: var(--label-color);
+    margin-top: 0;
+    font-size: 1.2rem;
+}
+
+#eligibility-list {
+    list-style-type: '✅';
+    padding-left: 25px;
+}
+
+#eligibility-list li {
+    margin-bottom: 10px;
+    line-height: 1.5;
+    font-weight: 700;
+}
+
 #print-btn {
     margin-top: 20px;
 }

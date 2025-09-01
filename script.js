@@ -183,6 +183,74 @@ document.addEventListener('DOMContentLoaded', () => {
         return tips;
     }
 
+    function checkEligibility(inputs) {
+        const eligiblePrograms = [];
+        const { nocTeer, canadianWorkExp, foreignWorkExp, firstLang, education, age, jobOffer, certificate, relativesInCanada } = inputs;
+        const teer = parseInt(nocTeer);
+
+        // Canadian Experience Class (CEC)
+        const cecLanguageOk = (teer <= 1 && firstLang.reading >= 7 && firstLang.writing >= 7 && firstLang.speaking >= 7 && firstLang.listening >= 7) ||
+                              (teer >= 2 && teer <=3 && firstLang.reading >= 5 && firstLang.writing >= 5 && firstLang.speaking >= 5 && firstLang.listening >= 5);
+        if (canadianWorkExp >= 1 && (teer <= 3) && cecLanguageOk) {
+            eligiblePrograms.push("Canadian Experience Class (CEC)");
+        }
+
+        // Federal Skilled Worker (FSW)
+        const fswLanguageOk = firstLang.reading >= 7 && firstLang.writing >= 7 && firstLang.speaking >= 7 && firstLang.listening >= 7;
+        if (foreignWorkExp >= 1 && (teer <= 3) && fswLanguageOk && education !== 'none') {
+            let fswPoints = 0;
+            // Language
+            fswPoints += (firstLang.reading >= 9 ? 6 : (firstLang.reading == 8 ? 5 : 4)) * 4;
+            // Education
+            if (education === 'phd') fswPoints += 25;
+            else if (education === 'masters') fswPoints += 23;
+            else if (education === 'twoPostSecondary') fswPoints += 22;
+            else if (education === 'bachelors') fswPoints += 21;
+            else if (education === 'postSecondary2') fswPoints += 19;
+            else if (education === 'postSecondary1') fswPoints += 15;
+            else if (education === 'secondary') fswPoints += 5;
+            // Work Experience
+            if (foreignWorkExp >= 6) fswPoints += 15;
+            else if (foreignWorkExp >= 4) fswPoints += 13;
+            else if (foreignWorkExp >= 2) fswPoints += 11;
+            else if (foreignWorkExp >= 1) fswPoints += 9;
+            // Age
+            if (age >= 18 && age <= 35) fswPoints += 12;
+            else if (age == 36) fswPoints += 11;
+            else if (age == 37) fswPoints += 10;
+            else if (age == 38) fswPoints += 9;
+            else if (age == 39) fswPoints += 8;
+            else if (age == 40) fswPoints += 7;
+            else if (age == 41) fswPoints += 6;
+            else if (age == 42) fswPoints += 5;
+            else if (age == 43) fswPoints += 4;
+            else if (age == 44) fswPoints += 3;
+            else if (age == 45) fswPoints += 2;
+            else if (age == 46) fswPoints += 1;
+            // Arranged Employment
+            if (jobOffer) fswPoints += 10;
+            // Adaptability
+            let adaptabilityPoints = 0;
+            if (inputs.spouseFirstLang.reading >= 4 && inputs.spouseFirstLang.writing >= 4 && inputs.spouseFirstLang.speaking >= 4 && inputs.spouseFirstLang.listening >= 4) adaptabilityPoints += 5;
+            if (canadianWorkExp >= 1) adaptabilityPoints += 10;
+            if (inputs.spouseWorkExp >= 1) adaptabilityPoints += 5;
+            if (relativesInCanada) adaptabilityPoints += 5;
+            fswPoints += Math.min(10, adaptabilityPoints);
+
+            if (fswPoints >= 67) {
+                eligiblePrograms.push(`Federal Skilled Worker (FSW) - with ${fswPoints} points`);
+            }
+        }
+
+        // Federal Skilled Trades (FST) - Simplified
+        const fstLanguageOk = firstLang.speaking >= 5 && firstLang.listening >= 5 && firstLang.reading >= 4 && firstLang.writing >= 4;
+        if (foreignWorkExp >= 2 && fstLanguageOk && (jobOffer || certificate)) {
+             eligiblePrograms.push("Federal Skilled Trades (FST) - Note: Occupation must be in a specific trade group.");
+        }
+
+        return eligiblePrograms;
+    }
+
     // --- DOM MANIPULATION ---
     const form = document.getElementById('crs-form');
     const maritalStatusSelect = document.getElementById('marital-status');
@@ -203,6 +271,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const printBtn = document.getElementById('print-btn');
     const tipsSection = document.getElementById('tips-section');
     const tipsList = document.getElementById('tips-list');
+    const eligibilityResults = document.getElementById('eligibility-results');
+    const eligibilityList = document.getElementById('eligibility-list');
     const emailForm = document.getElementById('email-form');
     const emailInput = document.getElementById('email-input');
     const emailStatus = document.getElementById('email-status');
@@ -321,6 +391,21 @@ document.addEventListener('DOMContentLoaded', () => {
             li.textContent = tip;
             tipsList.appendChild(li);
         });
+
+        // Check and display eligibility
+        const eligiblePrograms = checkEligibility(inputs);
+        eligibilityList.innerHTML = '';
+        if (eligiblePrograms.length > 0) {
+            eligiblePrograms.forEach(program => {
+                const li = document.createElement('li');
+                li.textContent = program;
+                eligibilityList.appendChild(li);
+            });
+            eligibilityResults.classList.remove('hidden');
+        } else {
+            eligibilityResults.classList.add('hidden');
+        }
+
 
         tipsSection.classList.remove('hidden');
 
