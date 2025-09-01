@@ -295,6 +295,7 @@ input[type="checkbox"] {
 
 #score-breakdown span {
     font-weight: 700;
+    transition: color 0.3s ease-in-out;
 }
 
 footer {

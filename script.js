@@ -265,9 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-
+    function updateScoreAndUI() {
         const formData = new FormData(form);
         const inputs = {
             maritalStatus: formData.get('maritalStatus'),
@@ -289,9 +287,9 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             spouseWorkExp: parseInt(formData.get('spouseWorkExp')),
             foreignWorkExp: parseInt(formData.get('foreignWorkExp')),
-            certificate: formData.get('certificate') === 'on',
-            provincialNomination: formData.get('provincialNomination') === 'on',
-            siblingInCanada: formData.get('siblingInCanada') === 'on',
+            certificate: form.elements['certificate'].checked,
+            provincialNomination: form.elements['provincialNomination'].checked,
+            siblingInCanada: form.elements['siblingInCanada'].checked,
             canadianEducation: formData.get('canadianEducation'),
         };
 
@@ -334,6 +332,18 @@ document.addEventListener('DOMContentLoaded', () => {
         emailForm.classList.remove('hidden');
 
         currentResult = result; // Store result
+    }
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        updateScoreAndUI();
+    });
+
+    form.addEventListener('input', () => {
+        // We only want to live-update if the results are already visible
+        if (!resultsSection.classList.contains('hidden')) {
+            updateScoreAndUI();
+        }
     });
 
     emailForm.addEventListener('submit', (e) => {
