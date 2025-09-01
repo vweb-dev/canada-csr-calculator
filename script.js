@@ -68,49 +68,46 @@ document.addEventListener('DOMContentLoaded', () => {
             detailedBreakdown.spouse_work_ca = SPOUSE_WORK_EXP_POINTS[inputs.spouseWorkExp] || 0;
         }
 
-        // Skill Transferability
-        let skillPoints = 0;
+        // --- Skill Transferability (Max 100 points) ---
+        let educationPoints = 0;
+        let foreignWorkPoints = 0;
+        let certPoints = 0;
+
         const hasPostSecondary = ['postSecondary1', 'postSecondary2', 'bachelors', 'twoPostSecondary', 'masters', 'phd'].includes(inputs.education);
         const hasTwoPostSecondary = ['twoPostSecondary', 'masters', 'phd'].includes(inputs.education);
         const clb7 = inputs.firstLang.reading >= 7 && inputs.firstLang.writing >= 7 && inputs.firstLang.speaking >= 7 && inputs.firstLang.listening >= 7;
         const clb9 = inputs.firstLang.reading >= 9 && inputs.firstLang.writing >= 9 && inputs.firstLang.speaking >= 9 && inputs.firstLang.listening >= 9;
 
-        // 1. Education + Language
-        if (hasPostSecondary && clb9) skillPoints = Math.max(skillPoints, SKILL_TRANSFERABILITY_POINTS.edu_lang_4);
-        else if (hasTwoPostSecondary && clb7) skillPoints = Math.max(skillPoints, SKILL_TRANSFERABILITY_POINTS.edu_lang_2);
-        else if (hasPostSecondary && clb7) skillPoints = Math.max(skillPoints, SKILL_TRANSFERABILITY_POINTS.edu_lang_1);
+        // A. Education points
+        if (hasPostSecondary && clb9) educationPoints = Math.max(educationPoints, SKILL_TRANSFERABILITY_POINTS.edu_lang_4);
+        else if (hasTwoPostSecondary && clb7) educationPoints = Math.max(educationPoints, SKILL_TRANSFERABILITY_POINTS.edu_lang_2);
+        else if (hasPostSecondary && clb7) educationPoints = Math.max(educationPoints, SKILL_TRANSFERABILITY_POINTS.edu_lang_1);
 
-        // 2. Education + Canadian Work Exp
-        if (hasTwoPostSecondary && inputs.canadianWorkExp >= 2) skillPoints = Math.max(skillPoints, SKILL_TRANSFERABILITY_POINTS.edu_work_4);
-        else if (hasPostSecondary && inputs.canadianWorkExp >= 2) skillPoints = Math.max(skillPoints, SKILL_TRANSFERABILITY_POINTS.edu_work_3);
-        else if (hasTwoPostSecondary && inputs.canadianWorkExp >= 1) skillPoints = Math.max(skillPoints, SKILL_TRANSFERABILITY_POINTS.edu_work_2);
-        else if (hasPostSecondary && inputs.canadianWorkExp >= 1) skillPoints = Math.max(skillPoints, SKILL_TRANSFERABILITY_POINTS.edu_work_1);
+        if (hasTwoPostSecondary && inputs.canadianWorkExp >= 2) educationPoints = Math.max(educationPoints, SKILL_TRANSFERABILITY_POINTS.edu_work_4);
+        else if (hasPostSecondary && inputs.canadianWorkExp >= 2) educationPoints = Math.max(educationPoints, SKILL_TRANSFERABILITY_POINTS.edu_work_3);
+        else if (hasTwoPostSecondary && inputs.canadianWorkExp >= 1) educationPoints = Math.max(educationPoints, SKILL_TRANSFERABILITY_POINTS.edu_work_2);
+        else if (hasPostSecondary && inputs.canadianWorkExp >= 1) educationPoints = Math.max(educationPoints, SKILL_TRANSFERABILITY_POINTS.edu_work_1);
 
-        breakdown.skill = skillPoints; // Assigning education related points first
+        // B. Foreign work experience points
+        if (inputs.foreignWorkExp >= 3 && clb9) foreignWorkPoints = Math.max(foreignWorkPoints, SKILL_TRANSFERABILITY_POINTS.foreign_work_lang_4);
+        else if (inputs.foreignWorkExp >= 1 && clb9) foreignWorkPoints = Math.max(foreignWorkPoints, SKILL_TRANSFERABILITY_POINTS.foreign_work_lang_3);
+        else if (inputs.foreignWorkExp >= 3 && clb7) foreignWorkPoints = Math.max(foreignWorkPoints, SKILL_TRANSFERABILITY_POINTS.foreign_work_lang_2);
+        else if (inputs.foreignWorkExp >= 1 && clb7) foreignWorkPoints = Math.max(foreignWorkPoints, SKILL_TRANSFERABILITY_POINTS.foreign_work_lang_1);
 
-        let foreignWorkSkillPoints = 0;
-        // 3. Foreign Work Exp + Language
-        if (inputs.foreignWorkExp >= 3 && clb9) foreignWorkSkillPoints = Math.max(foreignWorkSkillPoints, SKILL_TRANSFERABILITY_POINTS.foreign_work_lang_4);
-        else if (inputs.foreignWorkExp >= 1 && clb9) foreignWorkSkillPoints = Math.max(foreignWorkSkillPoints, SKILL_TRANSFERABILITY_POINTS.foreign_work_lang_3);
-        else if (inputs.foreignWorkExp >= 3 && clb7) foreignWorkSkillPoints = Math.max(foreignWorkSkillPoints, SKILL_TRANSFERABILITY_POINTS.foreign_work_lang_2);
-        else if (inputs.foreignWorkExp >= 1 && clb7) foreignWorkSkillPoints = Math.max(foreignWorkSkillPoints, SKILL_TRANSFERABILITY_POINTS.foreign_work_lang_1);
+        if (inputs.foreignWorkExp >= 3 && inputs.canadianWorkExp >= 2) foreignWorkPoints = Math.max(foreignWorkPoints, SKILL_TRANSFERABILITY_POINTS.foreign_work_canadian_4);
+        else if (inputs.foreignWorkExp >= 1 && inputs.canadianWorkExp >= 2) foreignWorkPoints = Math.max(foreignWorkPoints, SKILL_TRANSFERABILITY_POINTS.foreign_work_canadian_3);
+        else if (inputs.foreignWorkExp >= 3 && inputs.canadianWorkExp >= 1) foreignWorkPoints = Math.max(foreignWorkPoints, SKILL_TRANSFERABILITY_POINTS.foreign_work_canadian_2);
+        else if (inputs.foreignWorkExp >= 1 && inputs.canadianWorkExp >= 1) foreignWorkPoints = Math.max(foreignWorkPoints, SKILL_TRANSFERABILITY_POINTS.foreign_work_canadian_1);
 
-        // 4. Foreign Work Exp + Canadian Work Exp
-        if (inputs.foreignWorkExp >= 3 && inputs.canadianWorkExp >= 2) foreignWorkSkillPoints = Math.max(foreignWorkSkillPoints, SKILL_TRANSFERABILITY_POINTS.foreign_work_canadian_4);
-        else if (inputs.foreignWorkExp >= 1 && inputs.canadianWorkExp >= 2) foreignWorkSkillPoints = Math.max(foreignWorkSkillPoints, SKILL_TRANSFERABILITY_POINTS.foreign_work_canadian_3);
-        else if (inputs.foreignWorkExp >= 3 && inputs.canadianWorkExp >= 1) foreignWorkSkillPoints = Math.max(foreignWorkSkillPoints, SKILL_TRANSFERABILITY_POINTS.foreign_work_canadian_2);
-        else if (inputs.foreignWorkExp >= 1 && inputs.canadianWorkExp >= 1) foreignWorkSkillPoints = Math.max(foreignWorkSkillPoints, SKILL_TRANSFERABILITY_POINTS.foreign_work_canadian_1);
-
-        breakdown.skill += foreignWorkSkillPoints;
-
-        // 5. Certificate of Qualification + Language
+        // C. Certificate of qualification
         if (inputs.certificate) {
-            if (clb7) skillPoints += SKILL_TRANSFERABILITY_POINTS.cert_lang_2;
+            if (clb7) certPoints = Math.max(certPoints, SKILL_TRANSFERABILITY_POINTS.cert_lang_2);
             else if (inputs.firstLang.reading >= 5 && inputs.firstLang.writing >= 5 && inputs.firstLang.speaking >= 5 && inputs.firstLang.listening >= 5) {
-                skillPoints += SKILL_TRANSFERABILITY_POINTS.cert_lang_1;
+                certPoints = Math.max(certPoints, SKILL_TRANSFERABILITY_POINTS.cert_lang_1);
             }
         }
-        detailedBreakdown.skill = skillPoints;
+
+        detailedBreakdown.skill = Math.min(100, educationPoints + foreignWorkPoints + certPoints);
 
         // Additional Points
         if (inputs.siblingInCanada) detailedBreakdown.additional += ADDITIONAL_POINTS.sibling;
@@ -534,4 +531,43 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!localStorage.getItem('crsProfile')) {
         loadBtn.disabled = true;
     }
+
+    // --- THEME SWITCHER ---
+    const themeToggle = document.getElementById('theme-toggle');
+    const currentTheme = localStorage.getItem('theme');
+
+    function setTheme(theme) {
+        if (theme === 'light') {
+            document.body.classList.add('light-mode');
+            themeToggle.textContent = 'Dark Mode';
+        } else {
+            document.body.classList.remove('light-mode');
+            themeToggle.textContent = 'Light Mode';
+        }
+    }
+
+    if (currentTheme) {
+        setTheme(currentTheme);
+    } else {
+        // Default to dark unless user prefers light
+        const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+        if (prefersLight) {
+            localStorage.setItem('theme', 'light');
+            setTheme('light');
+        } else {
+             localStorage.setItem('theme', 'dark');
+             setTheme('dark');
+        }
+    }
+
+    themeToggle.addEventListener('click', () => {
+        let theme = localStorage.getItem('theme');
+        if (theme === 'dark') {
+            localStorage.setItem('theme', 'light');
+            setTheme('light');
+        } else {
+            localStorage.setItem('theme', 'dark');
+            setTheme('dark');
+        }
+    });
 });
