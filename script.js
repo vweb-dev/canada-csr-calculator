@@ -1,6 +1,8 @@
 /*
     CRS Calculator
-    Powered by VWEB.DEV
+    Developer: Zeeshan Ali Raza, Founder of VWEB.DEV
+    Contact: info@vweb.dev
+    Website: https://www.vweb.dev
 */
 document.addEventListener('DOMContentLoaded', () => {
     // --- CRS CALCULATION LOGIC ---
