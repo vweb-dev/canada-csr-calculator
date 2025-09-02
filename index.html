@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRS Calculator</title>
+    <meta name="author" content="VWEB.DEV">
+    <title>CRS Calculator | VWEB.DEV</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -185,6 +186,18 @@
                     </div>
                 </section>
 
+                <section id="proof-of-funds">
+                    <h2>Proof of Funds Calculator</h2>
+                    <div class="form-group">
+                        <label for="family-members">Number of Family Members</label>
+                        <input type="number" id="family-members" name="familyMembers" min="1" value="1">
+                    </div>
+                    <div class="results-card-mini">
+                        <h4>Required Settlement Funds: <span id="pof-result">$0 CAD</span></h4>
+                        <p class="disclaimer">Based on figures updated July 7, 2025. This is for estimation purposes only. Always consult the <a href="https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/documents/proof-funds.html" target="_blank">official IRCC website</a>.</p>
+                    </div>
+                </section>
+
                 <section id="eligibility-info">
                     <h2>Program Eligibility Information</h2>
                     <div class="form-group">
@@ -281,7 +294,8 @@
             </section>
         </main>
         <footer>
-            <p>Made by <a href="https://vweb.dev" target="_blank">vweb.dev</a></p>
+            <p>&copy; 2025 VWEB.DEV. All Rights Reserved.</p>
+            <p>Powered by <a href="https://vweb.dev" target="_blank">VWEB.DEV</a></p>
         </footer>
     </div>
     <script src="script.js"></script>

@@ -1,3 +1,7 @@
+/*
+    CRS Calculator Styles
+    Powered by VWEB.DEV
+*/
 :root {
     --primary-color: #FF6600;
     --background-color: #121212;
@@ -179,6 +183,35 @@ input[type="checkbox"] {
     margin-top: 0;
 }
 
+.results-card-mini {
+    background-color: #333;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.results-card-mini h4 {
+    color: var(--primary-color);
+    margin: 0 0 10px 0;
+    font-size: 1.2rem;
+}
+
+.results-card-mini h4 span {
+    color: var(--text-color);
+}
+
+.disclaimer {
+    font-size: 0.8rem;
+    color: var(--label-color);
+    margin: 0;
+}
+
+.disclaimer a {
+    color: var(--primary-color);
+}
+
+
 /* --- Light Mode --- */
 body.light-mode {
     --background-color: #F0F2F5;
@@ -192,8 +225,13 @@ body.light-mode section {
     background-color: #F8F9FA;
 }
 
-body.light-mode .results-card {
+body.light-mode .results-card,
+body.light-mode .results-card-mini {
      background-color: #F8F9FA;
+}
+
+body.light-mode .results-card-mini h4 span {
+    color: var(--text-color);
 }
 
 body.light-mode input[type="number"],

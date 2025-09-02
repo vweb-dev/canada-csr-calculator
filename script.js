@@ -1,3 +1,7 @@
+/*
+    CRS Calculator
+    Powered by VWEB.DEV
+*/
 document.addEventListener('DOMContentLoaded', () => {
     // --- CRS CALCULATION LOGIC ---
     const AGE_POINTS = {
@@ -41,6 +45,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const ADDITIONAL_POINTS = {
         sibling: 15, french_25: 25, french_50: 50, canadian_edu_1_2: 15,
         canadian_edu_3_plus: 30, provincial_nomination: 600,
+    };
+
+    const PROOF_OF_FUNDS = {
+        1: 15263,
+        2: 19001,
+        3: 23360,
+        4: 28362,
+        5: 32168,
+        6: 36280,
+        7: 40392,
+        perAdditional: 4112,
     };
 
     function calculateCRS(inputs) {
@@ -570,4 +585,30 @@ document.addEventListener('DOMContentLoaded', () => {
             setTheme('dark');
         }
     });
+
+    // --- PROOF OF FUNDS CALCULATOR LOGIC ---
+    const familyMembersInput = document.getElementById('family-members');
+    const pofResultEl = document.getElementById('pof-result');
+
+    function updateProofOfFunds() {
+        const numFamily = parseInt(familyMembersInput.value) || 0;
+        let requiredFunds = 0;
+
+        if (numFamily <= 0) {
+            requiredFunds = 0;
+        } else if (numFamily <= 7) {
+            requiredFunds = PROOF_OF_FUNDS[numFamily];
+        } else {
+            const baseAmount = PROOF_OF_FUNDS[7];
+            const additionalMembers = numFamily - 7;
+            requiredFunds = baseAmount + (additionalMembers * PROOF_OF_FUNDS.perAdditional);
+        }
+
+        pofResultEl.textContent = `$${requiredFunds.toLocaleString('en-US')} CAD`;
+    }
+
+    // Initial calculation on page load
+    updateProofOfFunds();
+
+    familyMembersInput.addEventListener('input', updateProofOfFunds);
 });
